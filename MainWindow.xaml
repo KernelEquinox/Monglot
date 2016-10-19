@@ -1,0 +1,126 @@
+﻿<Window x:Class="Monglot.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Monglot"
+        mc:Ignorable="d"
+        Title="Monglot" Height="753" Width="1294" ResizeMode="CanResizeWithGrip">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="Open" Executed="openFile" />
+    </Window.CommandBindings>
+    
+    <!-- Main outer grid. -->
+    <Grid Background="#FFEDEDED">
+        
+        <!-- Define the number of rows. -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="47"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- File, Vernacular,-->
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Command="Open" InputGestureText="Ctrl+O" BorderThickness="0" />
+                </MenuItem>
+                <MenuItem Header="_About">
+                    <MenuItem Header="About Monglot" Click="About" BorderThickness="0" />
+                </MenuItem>
+            </Menu>
+            <StackPanel></StackPanel>
+        </DockPanel>
+        <!-- Separate the column-based toolbar from the rest of the grid. -->
+        <Border Grid.Row="1" BorderBrush="#FF898989" BorderThickness="0,1">
+            <Grid>
+                <!-- Define the number of columns. -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="189" />
+                    <ColumnDefinition Width="292" />
+                    <ColumnDefinition Width="219" />
+                    <ColumnDefinition Width="117" />
+                    <ColumnDefinition Width="396" />
+                    <ColumnDefinition Width="66"  />
+                </Grid.ColumnDefinitions>
+                <!-- First column = tf_randomSeed, Glitchspeak -->
+                <Border BorderBrush="#FF898989" BorderThickness="0,0,1,0" HorizontalAlignment="Left" Width="189" Padding="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="tf_randomSeed" HorizontalAlignment="Right" Text="0011001000110000001100010011011000100000011101100111001100100000010011100110100101101110011001010111010001100101011001010110111000100000010001010110100101100111011010000111010001111001001011010100011001101111011101010111001000100000" Width="50" Margin="0" VerticalAlignment="Center" Padding="0" UseLayoutRounding="False" FontSize="14" Height="22"/>
+                        <Button x:Name="glitchSpeak" Grid.Column="1" Margin="0" Height="22" HorizontalAlignment="Center" Width="100" UseLayoutRounding="False" VerticalAlignment="Center" Click="glitchSpeak_Click">Glitchspeak</Button>
+                    </Grid>
+                </Border>
+
+                <!-- Second column = Replace, tf_from, With, tf_to, bt_replace, Transgress -->
+                <Border Grid.Column="1" BorderBrush="#FF898989" BorderThickness="0,0,1,0" Width="292" Padding="0" HorizontalAlignment="Left">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="63" />
+                            <ColumnDefinition Width="41" />
+                            <ColumnDefinition Width="42" />
+                            <ColumnDefinition Width="41" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="replace" Content="Replace" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBox x:Name="tf_from" Text="1984" Grid.Column="1" FontSize="14" Height="22" />
+                        <Label x:Name="with" Content="With" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBox x:Name="tf_to" Text="2016" Grid.Column="3" FontSize="14" Height="22" />
+                        <CheckBox x:Name="bt_replace" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Transgress" />
+                    </Grid>
+                </Border>
+
+                <!-- Third column = Progress, sl_chance, Order -->
+                <Border Grid.Column="2"  BorderBrush="#FF898989" BorderThickness="0,0,1,0" HorizontalAlignment="Left" Width="219" Padding="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="69" />
+                            <ColumnDefinition Width="98" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="progress" Content="Progress" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <Slider x:Name="sl_chance" Grid.Column="1" Maximum="100" VerticalAlignment="Center" IsMoveToPointEnabled="True" Value="50" />
+                        <Label x:Name="order" Content="Order" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Fourth column = Progress, sl_chance, Order -->
+                <Border Grid.Column="3"  BorderBrush="#FF898989" BorderThickness="0,0,1,0" HorizontalAlignment="Left" Width="117" Padding="0">
+                    <ComboBox x:Name="cb_transcoder" Width="102" Height="22" HorizontalAlignment="Center" VerticalAlignment="Center" Loaded="cb_transcoder_Loaded"/>
+                </Border>
+
+                <!-- Fifth column = tf_numFrames, bt_batch, Folder Batch, bt_preserve, EAffect -->
+                <Border Grid.Column="4"  BorderBrush="#FF898989" BorderThickness="0,0,1,0" HorizontalAlignment="Left" Width="396" Padding="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="44" />
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="tf_numFrames" Text="4" Width="28" Height="22" FontSize="14" />
+                        <CheckBox x:Name="bt_batch" Grid.Column="1" Content="Batch" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        <Button x:Name="folder_batch" Grid.Column="2" Content="Folder Batch" Height="22" Click="folderBatch" />
+                        <CheckBox x:Name="bt_preserve" Grid.Column="3" Content="Conserve" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="True" />
+                        <Button x:Name="eAffect" Grid.Column="4" Content="EAffect" Height="22" Width="86" HorizontalAlignment="Left" Click="eAffect_Click" />
+                    </Grid>
+                </Border>
+
+                <!-- Sixth column = SAVE -->
+                <Border Grid.Column="5"  BorderBrush="#FF898989" BorderThickness="0,0,1,0" HorizontalAlignment="Left" Width="66" Padding="0">
+                    <Button x:Name="SAVE" Content="SAVE" Width="55" HorizontalAlignment="Center" VerticalAlignment="Center" Click="saveBuffer" />
+                </Border>
+            </Grid>
+        </Border>
+        <Grid Grid.Row="2">
+            <Image x:Name="image" Source="Resources\Monglot.png" MaxWidth="{Binding Source.PixelWidth, ElementName=image, Mode=OneWay}" MaxHeight="{Binding Source.PixelHeight, ElementName=image, Mode=OneWay}" />
+        </Grid>
+    </Grid>
+
+</Window>
