@@ -5,7 +5,10 @@ A program that creates glitch images by applying [non]random and [un]controllabl
 
 Monglot was originally conceptualized as an educational tool by [ЯOSΛ MEИKMΛN](http://rosa-menkman.blogspot.com) (and programmed by Johan Larsby), and the Win32 port of Monglot was created with that goal in mind.
 
-### Differences from the original
+## Download
+You can download the latest release of Monglot [here](https://github.com/KernelEquinox/Monglot/releases/download/v1.0/Monglot.exe).
+
+## Differences from the original
 * Saves all files (if **Conserve** is checked) to `%USERPROFILE%\Documents\Monglot\`
 * Win processes them in little-endian format (resulting in different æffects)
 * Removed **GFD**, since it does the same thing as **Folder Batch**
@@ -18,8 +21,8 @@ Monglot was originally conceptualized as an educational tool by [ЯOSΛ MEИKMΛ
 
 Other than the differences above, the Win32 port of Monglot works the same as noted in in the [original Monglot documentation](http://rosa-menkman.blogspot.com/2011/01/monglot.html).
 
-### Building Monglot
+## Building Monglot
 Simply build it from the source in Visual Studio. There may be additional steps required based on your version of VS; this program was compiled with Visual Studio 2015.
 
-### Notes
+## Notes
 This repository will soon contain the original Monglot as well as this Win32 port once I get around to implementing the same fixes (maybe some/all of the same changes) as I have during the making of the Win32 version.
