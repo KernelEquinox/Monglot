@@ -25,7 +25,7 @@ namespace Monglot
         int width, height, stride, bpp, counter;
         WriteableBitmap backupBuffer, buffer;
         byte[] rawData, tempData;
-        string ext, transcoder, baseFile;
+        string ext, termExt, transcoder, baseFile;
         string[] formats = { "bmp", "gif", "png", "tiff", "jpg", "jp2" };
         string outPath = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%\Documents\Monglot");
 
@@ -87,9 +87,6 @@ namespace Monglot
         private void eAffect_Click(object sender, RoutedEventArgs e)
         {
             transcoder = cb_transcoder.SelectedItem.ToString().ToLower();
-            transcoder = getTranscoder(transcoder);
-            int timestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-            string filename = outPath + @"\" + timestamp + (counter++).ToString("D3") + "." + transcoder;
 
             int iter = 1;
             if (bt_batch.IsChecked == true)
@@ -101,9 +98,11 @@ namespace Monglot
             for (int i = 0; i < iter; i++)
             {
                 tempData = rawData;
-                timestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                filename = outPath + @"\" + timestamp + (counter++).ToString("D3") + "." + transcoder;
-                doGlitch(transcoder, filename);
+                termExt = getTranscoder(transcoder);
+                int timestamp = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                string filename = outPath + @"\" + timestamp + (counter++).ToString("D3") + "." + termExt;
+                doGlitch(filename);
+                GC.Collect();
             }
             counter = 0;
         }
@@ -136,7 +135,7 @@ namespace Monglot
                             transcoder = getTranscoder(transcoder);
                             string outFile = outPathGFD + @"\" + Path.GetFileName(file) + @"." + transcoder;
                             loadFile(file);
-                            doGlitch(transcoder, outFile);
+                            doGlitch(outFile);
                             break;
                         default:
                             break;
@@ -184,7 +183,7 @@ namespace Monglot
         // Updates global variables with the loaded file's properties
         private void loadFile(string filename)
         {
-            ext = transcoder = Path.GetExtension(filename).Substring(1).ToLower();
+            ext = transcoder = termExt = Path.GetExtension(filename).Substring(1).ToLower();
             rawData = File.ReadAllBytes(filename);
             backupBuffer = new WriteableBitmap(memDecode(rawData));
             buffer = new WriteableBitmap(backupBuffer);
@@ -215,18 +214,18 @@ namespace Monglot
                     }
                 case "jpg 2000":
                     return "jp2";
-                case "Random":
-                    return "???";
+                case "random":
+                    return formats[pokeRNG(6)];
                 default:
                     return transcoder;
             }
         }
 
         // Picks which glitching method to utilize
-        private void doGlitch(string transcoder, string outFile)
+        private void doGlitch(string outFile)
         {
-            tempData = memEncode(transcoder);
-            switch (transcoder)
+            tempData = memEncode();
+            switch (termExt)
             {
                 case "bmp":
                     tempData = wordPad(tempData);
@@ -300,16 +299,13 @@ namespace Monglot
         }
 
         // Encodes an image to the specified format in memory
-        private byte[] memEncode(string transcoder)
+        private byte[] memEncode()
         {
             byte[] bytes = null;
 
-            if (transcoder == "???")
-                transcoder = formats[pokeRNG(6)];
-
             using (MemoryStream stream = new MemoryStream())
             {
-                switch (transcoder)
+                switch (termExt)
                 {
                     case "bmp":
                         BmpBitmapEncoder bmpEncoder = new BmpBitmapEncoder();
@@ -363,7 +359,7 @@ namespace Monglot
             {
                 using (MemoryStream stream = new MemoryStream(bytes))
                 {
-                    switch (transcoder)
+                    switch (termExt)
                     {
                         case "gif":
                             GifBitmapDecoder gifDecoder = new GifBitmapDecoder(stream,
